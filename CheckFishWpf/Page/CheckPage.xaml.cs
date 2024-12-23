@@ -32,20 +32,38 @@ namespace CheckFishWpf.Page
         private void Otchet_Click(object sender, RoutedEventArgs e)
         {
 
-
-            if (!int.TryParse(MinTemp.Text, out int minTemp) || !int.TryParse(MaxTemp.Text, out int maxTemp))
-            {
-                MessageBox.Show("Пожалуйста, введите корректные значения для температур.");
-                return;
-            }
-
             string[] TempList = Temp.Text.Split(' ');
             List<int> temperatures = TempList.Select(t => int.TryParse(t.Trim(), out int temp) ? temp : 0).ToList();
+            List<string> list = new List<string>();
+            TimeMaxTemp.Text = "0";
+            TimeMinTemp.Text = "0";
+            var violation = list;
 
-            var violations = CheckTemp(temperatures, minTemp, maxTemp);
+            if (MinTemp.Text == "")
+            {
+                var violations = CheckTemp(temperatures, 0, Convert.ToInt32(MaxTemp.Text));
+                violation = violations;
+            }
+            else if (MaxTemp.Text == "")
+            {
+                var violations = CheckTemp(temperatures, Convert.ToInt32(MinTemp.Text), 0);
+                violation = violations;
+            }
+            else
+            {
+                var violations = CheckTemp(temperatures, Convert.ToInt32(MinTemp.Text), Convert.ToInt32(MaxTemp.Text));
+                violation = violations;
+            }
 
+            
             string filePath = "C:\\Users\\Пользователь\\OneDrive\\Рабочий стол\\OtchetDeliveryFish.txt";
-            File.AppendAllText("" + filePath, $"Вид рыбы: {NameFish.Text}" + $"\nМаксимальная температура: {MaxTemp.Text}" + $"\nМинимальная температура: {MinTemp.Text}" + $"\nДата и время старта доставки: {DateTimeStart.Text}" + $"\nТемпература: {Temp.Text}\n" + string.Join(Environment.NewLine, violations));
+            MessageBoxResult result = MessageBox.Show(
+                    $"Отчет сформирован. Путь: {filePath}",
+                    "Отчет",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+            File.AppendAllText("" + filePath, $"Вид рыбы: {NameFish.Text}" + $"\nМаксимальная температура: {MaxTemp.Text}" + $"\nМинимальная температура: {MinTemp.Text}" + $"\nДата и время старта доставки: {DateTimeStart.Text}" + $"\nТемпература: {Temp.Text}\n" + string.Join(Environment.NewLine, violation));
         }
 
         private List<string> CheckTemp(List<int> temperatures, int minTemp, int maxTemp)
@@ -82,6 +100,11 @@ namespace CheckFishWpf.Page
             if (violationMin > Convert.ToInt32(TimeMinTemp.Text))
             {
                 checkMin[0] = $"Порог минимально допустимой температуры превышен на {violationMin - Convert.ToInt32(TimeMinTemp.Text)} минут.";
+                MessageBoxResult result = MessageBox.Show(
+                        $"Температурный режим нарушен!",
+                        "Нарушение",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
                 return checkMin;
             }
 
@@ -115,11 +138,7 @@ namespace CheckFishWpf.Page
                         DateTimeStart.Text = InfoInDocs[0];
                         Temp.Text = InfoInDocs[1];
                     }
-                    MessageBoxResult result = MessageBox.Show(
-                    "Отчет сформирован. Путь: C:\\Users\\Пользователь\\OneDrive\\Рабочий стол\\OtchetDeliveryFish.txt",
-                    "Отчет",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                    
                 }
                 catch (Exception ex)
                 {
