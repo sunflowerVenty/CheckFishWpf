@@ -115,6 +115,11 @@ namespace CheckFishWpf.Page
                         DateTimeStart.Text = InfoInDocs[0];
                         Temp.Text = InfoInDocs[1];
                     }
+                    MessageBoxResult result = MessageBox.Show(
+                    "Отчет сформирован. Путь: C:\\Users\\Пользователь\\OneDrive\\Рабочий стол\\OtchetDeliveryFish.txt",
+                    "Отчет",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {

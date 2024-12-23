@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CheckFishWpf.Page"
       mc:Ignorable="d" 
-      d:DesignHeight="550" d:DesignWidth="900"
+      d:DesignHeight="650" d:DesignWidth="1000"
       Title="CheckPage">
 
     <Grid>
@@ -47,7 +47,5 @@
             <Button x:Name="Docs" Width="300" Height="50"  Content="Загрузить данные датчика температуры" Margin="10" BorderBrush="#163163" Background="#163163" Click="Docs_Click"/>
             <Button x:Name="Otchet" Width="200" Height="50"  Content="Получить отчет" Margin="10" BorderBrush="#163163" Background="#163163" Click="Otchet_Click"/>
         </StackPanel>
-        <TextBlock Name="result" Grid.Row="1" Grid.Column="1" Foreground="Black" Background="White" TextWrapping="Wrap" Margin="436,163,10,85"/>
-
     </Grid>
 </Page>
