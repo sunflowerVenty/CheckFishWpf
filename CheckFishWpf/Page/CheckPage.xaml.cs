@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CheckFishWpf.Page
 {
@@ -41,7 +42,9 @@ namespace CheckFishWpf.Page
             List<int> temperatures = TempList.Select(t => int.TryParse(t.Trim(), out int temp) ? temp : 0).ToList();
 
             var violations = CheckTemp(temperatures, minTemp, maxTemp);
-            result.Text = string.Join(Environment.NewLine, violations);
+
+            string filePath = "C:\\Users\\Пользователь\\OneDrive\\Рабочий стол\\OtchetDeliveryFish.txt";
+            File.AppendAllText(filePath, string.Join(Environment.NewLine, violations));
         }
 
         private List<string> CheckTemp(List<int> temperatures, int minTemp, int maxTemp)
@@ -54,6 +57,8 @@ namespace CheckFishWpf.Page
             {
                 "Доставка произошла успешно"
             };
+
+
 
             int violationMin = 0;
             int violationMax = 0;
@@ -93,6 +98,29 @@ namespace CheckFishWpf.Page
 
         private void Docs_Click(object sender, RoutedEventArgs e)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*",
+                Title = "Выберите текстовый файл"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    using (StreamReader reader = new StreamReader(openFileDialog.FileName))
+                    {
+                        string fileContent = reader.ReadToEnd();
+                        string[] InfoInDocs = fileContent.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+                        DateTimeStart.Text = InfoInDocs[0];
+                        Temp.Text = InfoInDocs[1];
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }
