@@ -43,9 +43,11 @@
             <TextBox x:Name="Temp" Width="500" HorizontalAlignment="Left" Height="20" Margin="0, 5, 0, 10"/>
 
         </StackPanel>
-        
+        <StackPanel Grid.Column="1" Grid.Row="2"  Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="Docs" Width="300" Height="50"  Content="Загрузить данные датчика температуры" Margin="10" BorderBrush="#163163" Background="#163163" Click="Docs_Click"/>
+            <Button x:Name="Otchet" Width="200" Height="50"  Content="Получить отчет" Margin="10" BorderBrush="#163163" Background="#163163" Click="Otchet_Click"/>
+        </StackPanel>
         <TextBlock Name="result" Grid.Row="1" Grid.Column="1" Foreground="Black" Background="White" TextWrapping="Wrap" Margin="436,163,10,85"/>
 
-        <Button x:Name="Otchet" Content="Получить отчет" BorderBrush="#163163" Grid.Column="1" Width="200" Height="50" Grid.Row="2" Background="#163163" Click="Otchet_Click"/>
     </Grid>
 </Page>
