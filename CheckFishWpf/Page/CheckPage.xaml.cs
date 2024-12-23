@@ -44,7 +44,7 @@ namespace CheckFishWpf.Page
             var violations = CheckTemp(temperatures, minTemp, maxTemp);
 
             string filePath = "C:\\Users\\Пользователь\\OneDrive\\Рабочий стол\\OtchetDeliveryFish.txt";
-            File.AppendAllText(filePath, string.Join(Environment.NewLine, violations));
+            File.AppendAllText("" + filePath, $"Вид рыбы: {NameFish.Text}" + $"\nМаксимальная температура: {MaxTemp.Text}" + $"\nМинимальная температура: {MinTemp.Text}" + $"\nДата и время старта доставки: {DateTimeStart.Text}" + $"\nТемпература: {Temp.Text}\n" + string.Join(Environment.NewLine, violations));
         }
 
         private List<string> CheckTemp(List<int> temperatures, int minTemp, int maxTemp)
