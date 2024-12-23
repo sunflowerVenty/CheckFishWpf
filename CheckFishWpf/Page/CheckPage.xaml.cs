@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -80,13 +81,12 @@ namespace CheckFishWpf.Page
 
             if (violationMin > Convert.ToInt32(TimeMinTemp.Text))
             {
-                result.Text = "";
                 checkMin[0] = $"Порог минимально допустимой температуры превышен на {violationMin - Convert.ToInt32(TimeMinTemp.Text)} минут.";
                 return checkMin;
             }
+
             else if (violationMax > Convert.ToInt32(TimeMaxTemp.Text))
             {
-                result.Text = "";
                 checkMax[0] = $"Порог максимально допустимой температуры превышен на {violationMax - Convert.ToInt32(TimeMaxTemp.Text)} минут.";
                 return checkMax;
             }
@@ -127,5 +127,23 @@ namespace CheckFishWpf.Page
                 }
             }
         }
+
+        private void Text_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !Regex.IsMatch(e.Text, "^[a-zA-Zа-яА-ЯёЁ]+$");
+        }
+
+
+        private void Number_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !Regex.IsMatch(e.Text, @"^[-0-9]+$") && !(e.Text == "-");
+        }
+
+        private void DateTime_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !Regex.IsMatch(e.Text, @"^[0-9 :/-]+$");
+        }
+        
+        
     }
 }
